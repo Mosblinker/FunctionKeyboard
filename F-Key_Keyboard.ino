@@ -37,10 +37,10 @@ void setup() {
         while(true){}
     }
 
-    // Set the LED pin to an output
-    pinMode(17, OUTPUT);
+    // Set the LED pin, pin 17, to an output
+    pinMode(LED_BUILTIN, OUTPUT);
     // Turn off the LEDs, active low
-    digitalWrite(17, HIGH);
+    digitalWrite(LED_BUILTIN, HIGH);
     TXLED0;
     
     // Start emulating a keyboard connected to a computer
