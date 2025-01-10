@@ -36,6 +36,9 @@ const char TEST_KEYBOARD_MAP[ROW_COUNT][COLUMN_COUNT] = {
 // A test keypad to use to test the keyboard
 Keypad testKeyPad = Keypad(makeKeymap(TEST_KEYBOARD_MAP), ROW_PINS, COLUMN_PINS, ROW_COUNT, COLUMN_COUNT);
 
+/** 
+ * This sets up the microcontroller for the program.
+ */
 void setup() {
     // A check to make sure everything is functioning normally. 
     // Set pin 1 to be an input with a pullup resistor
@@ -59,7 +62,9 @@ void setup() {
     // Start emulating a keyboard connected to a computer
     Keyboard.begin();
 }
-
+/**
+ * This is the main loop of the program.
+ */
 void loop() {
     // Check for any active keys (up to 10 active keys)
     if (keyPad.getKeys()){
