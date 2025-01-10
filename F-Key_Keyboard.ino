@@ -19,22 +19,15 @@ const byte ROW_PINS[ROW_COUNT] = {2, 3, 4};
 const byte COLUMN_PINS[COLUMN_COUNT] = {5, 6, 7, 8};
 // A character map to represent the keys of the keyboard. 
 const char KEYBOARD_MAP[ROW_COUNT][COLUMN_COUNT] = {
-    {KEY_F13, KEY_F14, KEY_F15, KEY_F16},
-    {KEY_F17, KEY_F18, KEY_F19, KEY_F20},
-    {KEY_F21, KEY_F22, KEY_F23, KEY_F24}
-};
-// The keypad that is being scanned
-Keypad keyPad = Keypad(makeKeymap(KEYBOARD_MAP), ROW_PINS, COLUMN_PINS, ROW_COUNT, COLUMN_COUNT);
-// The pin for determining whether to use the test keypad layout instead of the actual keypad
-const int KEYPAD_TOGGLE_PIN = 10;
-// A character map for a test keyboard for the time being
-const char TEST_KEYBOARD_MAP[ROW_COUNT][COLUMN_COUNT] = {
+//    {KEY_F13, KEY_F14, KEY_F15, KEY_F16},
+//    {KEY_F17, KEY_F18, KEY_F19, KEY_F20},
+//    {KEY_F21, KEY_F22, KEY_F23, KEY_F24}
     {'a', 'b', 'c', 'd'},
     {'e', 'f', 'g', 'h'},
     {'i', 'j', 'k', 'l'}
 };
-// A test keypad to use to test the keyboard
-Keypad testKeyPad = Keypad(makeKeymap(TEST_KEYBOARD_MAP), ROW_PINS, COLUMN_PINS, ROW_COUNT, COLUMN_COUNT);
+// The keypad that is being scanned
+Keypad keyPad = Keypad(makeKeymap(KEYBOARD_MAP), ROW_PINS, COLUMN_PINS, ROW_COUNT, COLUMN_COUNT);
 
 // Function definitions
 void keyPressedActionPerformed(Key key);
@@ -61,9 +54,6 @@ void setup() {
     // Turn off the LEDs, active low
     digitalWrite(LED_BUILTIN, HIGH);
     TXLED0;
-
-    // Set the test keypad pin to be an input with a pullup resistor
-    pinMode(KEYPAD_TOGGLE_PIN, INPUT_PULLUP);
     
     // Start emulating a keyboard connected to a computer
     // TODO: Is this actually necessary?
@@ -136,4 +126,3 @@ void scanKeyState(Key key){
         }
     }
 }
-
