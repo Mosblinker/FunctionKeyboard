@@ -25,6 +25,16 @@ const char KEYBOARD_MAP[ROW_COUNT][COLUMN_COUNT] = {
 };
 // The keypad that is being scanned
 Keypad keyPad = Keypad(makeKeymap(KEYBOARD_MAP), ROW_PINS, COLUMN_PINS, ROW_COUNT, COLUMN_COUNT);
+// The pin for determining whether to use the test keypad layout instead of the actual keypad
+const int KEYPAD_TOGGLE_PIN = 10;
+// A character map for a test keyboard for the time being
+const char TEST_KEYBOARD_MAP[ROW_COUNT][COLUMN_COUNT] = {
+    {'a', 'b', 'c', 'd'},
+    {'e', 'f', 'g', 'h'},
+    {'i', 'j', 'k', 'l'}
+};
+// A test keypad to use to test the keyboard
+Keypad testKeyPad = Keypad(makeKeymap(TEST_KEYBOARD_MAP), ROW_PINS, COLUMN_PINS, ROW_COUNT, COLUMN_COUNT);
 
 void setup() {
     // A check to make sure everything is functioning normally. 
@@ -42,6 +52,9 @@ void setup() {
     // Turn off the LEDs, active low
     digitalWrite(LED_BUILTIN, HIGH);
     TXLED0;
+
+    // Set the test keypad pin to be an input with a pullup resistor
+    pinMode(KEYPAD_TOGGLE_PIN, INPUT_PULLUP);
     
     // Start emulating a keyboard connected to a computer
     Keyboard.begin();
