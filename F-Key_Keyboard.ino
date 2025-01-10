@@ -45,8 +45,16 @@ void setup() {
 }
 
 void loop() {
-    // put your main code here, to run repeatedly:
-
+    // Check for any active keys (up to 10 active keys)
+    if (keyPad.getKeys()){
+        // Scan the list of active keys
+        for (int i = 0; i < LIST_MAX; i++){
+            // If the current key's state has changed
+            if (keyPad.key[i].stateChanged){
+                }
+            }
+        }
+    }
     // If there is any delay between scans of the keyboard matrix
     if (SCANNING_DELAY > 0)
         // Wait before starting the next scan of the keyboard matrix
