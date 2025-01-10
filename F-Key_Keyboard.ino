@@ -36,6 +36,11 @@ const char TEST_KEYBOARD_MAP[ROW_COUNT][COLUMN_COUNT] = {
 // A test keypad to use to test the keyboard
 Keypad testKeyPad = Keypad(makeKeymap(TEST_KEYBOARD_MAP), ROW_PINS, COLUMN_PINS, ROW_COUNT, COLUMN_COUNT);
 
+// Function definitions
+void keyPressedActionPerformed(Key key);
+void keyReleasedActionPerformed(Key key);
+void keyHeldActionPerformed(Key key);
+
 /** 
  * This sets up the microcontroller for the program.
  */
@@ -60,6 +65,7 @@ void setup() {
     pinMode(KEYPAD_TOGGLE_PIN, INPUT_PULLUP);
     
     // Start emulating a keyboard connected to a computer
+    // TODO: Is this actually necessary?
     Keyboard.begin();
 }
 /**
@@ -75,17 +81,16 @@ void loop() {
                 // Determine the action to preform based off the key's state
                 switch(keyPad.key[i].kstate){
                     case PRESSED:       // If the key was just pressed
-                        // Press the key on the computer's keyboard
-                        Keyboard.press(keyPad.key[i].kchar);
+                        // Process the key being pressed
+                        keyPressedActionPerformed(keyPad.key[i]);
                         break;
                     case RELEASED:      // If the key was just released
-                        // Release the key on the computer's keyboard
-                        Keyboard.release(keyPad.key[i].kchar);
-//                        break;
-//                    case HOLD:          // If the key is being held
-//                        break;
-//                    case IDLE:          // If the key is currently idle
-//                        
+                        // Process the key being released
+                        keyReleasedActionPerformed(keyPad.key[i]);
+                        break;
+                    case HOLD:          // If the key is being held
+                        // Process the key being held
+                        keyHeldActionPerformed(keyPad.key[i]);
                 }
             }
         }
@@ -94,4 +99,30 @@ void loop() {
     if (SCANNING_DELAY > 0)
         // Wait before starting the next scan of the keyboard matrix
         delay(SCANNING_DELAY);
+}
+/**
+ * This is invoked when a key is pressed and is used to perform the action for the 
+ * given key when pressed.
+ * @param key - The key that was pressed.
+ */
+void keyPressedActionPerformed(Key key){
+    // Press the key on the computer's keyboard
+    Keyboard.press(key.kchar);
+}
+/**
+ * This is invoked when a key is released and is used to perform the action for the 
+ * given key when released.
+ * @param key - The key that was released.
+ */
+void keyReleasedActionPerformed(Key key){
+    // Release the key on the computer's keyboard
+    Keyboard.release(key.kchar);
+}
+/**
+ * This is invoked when a key is held and is used to perform the action for the 
+ * given key when held.
+ * @param key - The key that is being held.
+ */
+void keyHeldActionPerformed(Key key){
+    // Do nothing, at least for now
 }
