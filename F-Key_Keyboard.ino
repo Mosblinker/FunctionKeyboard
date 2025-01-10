@@ -27,8 +27,21 @@ const char[ROW_COUNT][COLUMN_COUNT] KEYBOARD_MAP = {
 Keypad keyPad = Keypad(makeKeymap(KEYBOARD_MAP), ROW_PINS, COLUMN_PINS, ROW_COUNT, COLUMN_COUNT);
 
 void setup() {
-    // put your setup code here, to run once:
+    // A check to make sure everything is functioning normally. 
+    // Set pin 1 to be an input with a pullup resistor
+    pinMode(1, INPUT_PULLUP);
+    // If pin 1 is low, then we can assume that something has gone wrong and we should 
+    // disable the keyboard input
+    if (digitalRead(1) == LOW){
+        // Infinite while loop to disable the device
+        while(true){}
+    }
 
+    // Set the LED pin to an output
+    pinMode(ledPin, OUTPUT);
+    // Turn off the LEDs, active low
+    digitalWrite(ledPin, HIGH);
+    TXLED0;
 }
 
 void loop() {
