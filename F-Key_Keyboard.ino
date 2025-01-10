@@ -40,6 +40,7 @@ Keypad testKeyPad = Keypad(makeKeymap(TEST_KEYBOARD_MAP), ROW_PINS, COLUMN_PINS,
 void keyPressedActionPerformed(Key key);
 void keyReleasedActionPerformed(Key key);
 void keyHeldActionPerformed(Key key);
+void scanKeyState(Key key);
 
 /** 
  * This sets up the microcontroller for the program.
@@ -76,23 +77,8 @@ void loop() {
     if (keyPad.getKeys()){
         // Scan the list of active keys
         for (int i = 0; i < LIST_MAX; i++){
-            // If the current key's state has changed
-            if (keyPad.key[i].stateChanged){
-                // Determine the action to preform based off the key's state
-                switch(keyPad.key[i].kstate){
-                    case PRESSED:       // If the key was just pressed
-                        // Process the key being pressed
-                        keyPressedActionPerformed(keyPad.key[i]);
-                        break;
-                    case RELEASED:      // If the key was just released
-                        // Process the key being released
-                        keyReleasedActionPerformed(keyPad.key[i]);
-                        break;
-                    case HOLD:          // If the key is being held
-                        // Process the key being held
-                        keyHeldActionPerformed(keyPad.key[i]);
-                }
-            }
+            // Scan the current key
+            scanKeyState(keyPad.key[i]);
         }
     }
     // If there is any delay between scans of the keyboard matrix
@@ -126,3 +112,28 @@ void keyReleasedActionPerformed(Key key){
 void keyHeldActionPerformed(Key key){
     // Do nothing, at least for now
 }
+/**
+ * This scans the given key to determine if its state has changed, and if so, 
+ * processes it's new state.
+ * @param key - The key to scan and process.
+ */
+void scanKeyState(Key key){
+    // If the key's state has changed
+    if (key.stateChanged){
+        // Determine the action to preform based off the key's state
+        switch(key.kstate){
+            case PRESSED:       // If the key was just pressed
+                // Process the key being pressed
+                keyPressedActionPerformed(key);
+                break;
+            case RELEASED:      // If the key was just released
+                // Process the key being released
+                keyReleasedActionPerformed(key);
+                break;
+            case HOLD:          // If the key is being held
+                // Process the key being held
+                keyHeldActionPerformed(key);
+        }
+    }
+}
+
