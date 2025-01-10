@@ -42,6 +42,9 @@ void setup() {
     // Turn off the LEDs, active low
     digitalWrite(ledPin, HIGH);
     TXLED0;
+    
+    // Start emulating a keyboard connected to a computer
+    Keyboard.begin();
 }
 
 void loop() {
@@ -51,6 +54,20 @@ void loop() {
         for (int i = 0; i < LIST_MAX; i++){
             // If the current key's state has changed
             if (keyPad.key[i].stateChanged){
+                // Determine the action to preform based off the key's state
+                switch(keyPad.key[i].kstate){
+                    case PRESSED:       // If the key was just pressed
+                        // Press the key on the computer's keyboard
+                        Keyboard.press(keyPad.key[i].kchar);
+                        break;
+                    case RELEASED:      // If the key was just released
+                        // Release the key on the computer's keyboard
+                        Keyboard.release(keyPad.key[i].kchar);
+//                        break;
+//                    case HOLD:          // If the key is being held
+//                        break;
+//                    case IDLE:          // If the key is currently idle
+//                        
                 }
             }
         }
