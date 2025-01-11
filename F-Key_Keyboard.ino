@@ -7,6 +7,10 @@
 #include <Keypad.h>
 #include <Keyboard.h>
 
+// The pin used to set the brightness of the LEDs via a potentiometer.
+const int BRIGHTNESS_CONTROL = A0;
+// The pin used to control the brightness of the LEDs via PWM.
+const int BRIGHTNESS_OUTPUT = 10;
 // The number of rows in the keyboard matrix
 const byte ROW_COUNT = 3;
 // The number of columns in the keyboard matrix
@@ -52,6 +56,9 @@ void setup() {
     // Turn off the LEDs, active low
     digitalWrite(LED_BUILTIN, HIGH);
     TXLED0;
+
+    // Set the brightness PWM pin to an output
+    pinMode(BRIGHTNESS_OUTPUT, OUTPUT);
     
     // Start emulating a keyboard connected to a computer
     // TODO: Is this actually necessary?
@@ -69,6 +76,8 @@ void loop() {
             scanKeyState(keyPad.key[i]);
         }
     }
+    // Update the brightness of the LEDs based off the potentiometer
+    analogWrite(BRIGHTNESS_OUTPUT,analogRead(BRIGHTNESS_CONTROL)/4);
 }
 /**
  * This is invoked when a key is pressed and is used to perform the action for the 
