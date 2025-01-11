@@ -7,8 +7,6 @@
 #include <Keypad.h>
 #include <Keyboard.h>
 
-// The amount of time to wait between scans of the keyboard matrix, in milliseconds
-const unsigned long SCANNING_DELAY = 0;
 // The number of rows in the keyboard matrix
 const byte ROW_COUNT = 3;
 // The number of columns in the keyboard matrix
@@ -71,10 +69,6 @@ void loop() {
             scanKeyState(keyPad.key[i]);
         }
     }
-    // If there is any delay between scans of the keyboard matrix
-    if (SCANNING_DELAY > 0)
-        // Wait before starting the next scan of the keyboard matrix
-        delay(SCANNING_DELAY);
 }
 /**
  * This is invoked when a key is pressed and is used to perform the action for the 
