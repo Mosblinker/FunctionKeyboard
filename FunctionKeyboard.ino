@@ -6,6 +6,7 @@
 
 #include <Keypad.h>
 #include <Keyboard.h>
+#include <math.h>
 
 // The pin used to set the brightness of the LEDs via a potentiometer.
 const int BRIGHTNESS_CONTROL = A0;
@@ -93,7 +94,7 @@ void loop() {
     if (brightCount >= BRIGHTNESS_POLLING){
         // Calculate the brightness for the LEDs based off the average of the 
         // brightness control over the last few polls
-        int tempBright = brightAvg/(4*brightCount);
+        int tempBright = floor(brightAvg/(4*brightCount));
         // If the new brightness is different from the old brightness
         if (tempBright != bright){
             bright = tempBright;
