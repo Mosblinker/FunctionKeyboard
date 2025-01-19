@@ -21,12 +21,9 @@ const byte ROW_PINS[ROW_COUNT] = {2, 3, 4};
 const byte COLUMN_PINS[COLUMN_COUNT] = {5, 6, 7, 8};
 // A character map to represent the keys of the keyboard. 
 const char KEYBOARD_MAP[ROW_COUNT][COLUMN_COUNT] = {
-//    {KEY_F13, KEY_F14, KEY_F15, KEY_F16},
-//    {KEY_F17, KEY_F18, KEY_F19, KEY_F20},
-//    {KEY_F21, KEY_F22, KEY_F23, KEY_F24}
-    {'a', 'b', 'c', 'd'},
-    {'e', 'f', 'g', 'h'},
-    {'i', 'j', 'k', 'l'}
+    {KEY_F13, KEY_F14, KEY_F15, KEY_F16},
+    {KEY_F17, KEY_F18, KEY_F19, KEY_F20},
+    {KEY_F21, KEY_F22, KEY_F23, KEY_F24}
 };
 // The keypad that is being scanned
 Keypad keyPad = Keypad(makeKeymap(KEYBOARD_MAP), ROW_PINS, COLUMN_PINS, ROW_COUNT, COLUMN_COUNT);
