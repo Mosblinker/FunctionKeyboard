@@ -41,6 +41,8 @@ void scanKeyState(Key key);
 int brightAvg = 0;
 // The amount of times the brightness control has been polled so far
 int brightCount = 0;
+// The current brightness of the LEDs
+int bright = 0;
 
 /** 
  * This sets up the microcontroller for the program.
@@ -86,12 +88,18 @@ void loop() {
     // Add the current reading of the brightness control to the average
     brightAvg += analogRead(BRIGHTNESS_CONTROL);
     // Increment the number of times the brightness control has been polled
-    brightCount ++;
+    brightCount++;
     // If the brightness control has been polled enough times
     if (brightCount >= BRIGHTNESS_AVERAGING){
-        // Update the brightness of the LEDs based off the average of the 
-        // brightness control
-        analogWrite(BRIGHTNESS_OUTPUT,brightAvg/(4*brightCount));
+        // Calculate the brightness for the LEDs based off the average of the 
+        // brightness control over the last few polls
+        int tempBright = brightAvg/(4*brightCount);
+        // If the new brightness is different from the old brightness
+        if (tempBright != bright){
+            bright = tempBright;
+            // Update the brightness of the LEDs
+            analogWrite(BRIGHTNESS_OUTPUT,bright);
+        }
         // Reset the polling count
         brightCount = 0;
         // Reset the average
