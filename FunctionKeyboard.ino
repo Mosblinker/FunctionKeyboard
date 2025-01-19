@@ -13,7 +13,7 @@ const int BRIGHTNESS_CONTROL = A0;
 const int BRIGHTNESS_OUTPUT = 10;
 // The number of times to poll the brightness control and average it 
 // to account for noise
-const int BRIGHTNESS_AVERAGING = 8;
+const int BRIGHTNESS_POLLING = 64;
 // The number of rows in the keyboard matrix
 const byte ROW_COUNT = 3;
 // The number of columns in the keyboard matrix
@@ -90,7 +90,7 @@ void loop() {
     // Increment the number of times the brightness control has been polled
     brightCount++;
     // If the brightness control has been polled enough times
-    if (brightCount >= BRIGHTNESS_AVERAGING){
+    if (brightCount >= BRIGHTNESS_POLLING){
         // Calculate the brightness for the LEDs based off the average of the 
         // brightness control over the last few polls
         int tempBright = brightAvg/(4*brightCount);
