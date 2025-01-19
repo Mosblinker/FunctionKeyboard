@@ -11,6 +11,9 @@
 const int BRIGHTNESS_CONTROL = A0;
 // The pin used to control the brightness of the LEDs via PWM.
 const int BRIGHTNESS_OUTPUT = 10;
+// The number of times to poll the brightness control and average it 
+// to account for noise
+const int BRIGHTNESS_AVERAGING = 8;
 // The number of rows in the keyboard matrix
 const byte ROW_COUNT = 3;
 // The number of columns in the keyboard matrix
@@ -34,6 +37,11 @@ void keyReleasedActionPerformed(Key key);
 void keyHeldActionPerformed(Key key);
 void scanKeyState(Key key);
 
+// The unaveraged brightness used to get the brightness for the LEDs
+int brightAvg = 0;
+// The amount of times the brightness control has been polled so far
+int brightCount = 0;
+
 /** 
  * This sets up the microcontroller for the program.
  */
@@ -56,6 +64,8 @@ void setup() {
 
     // Set the brightness PWM pin to an output
     pinMode(BRIGHTNESS_OUTPUT, OUTPUT);
+    // Start the LED brightness at 0 for the time being
+    analogWrite(BRIGHTNESS_OUTPUT,0);
     
     // Start emulating a keyboard connected to a computer
     // TODO: Is this actually necessary?
@@ -73,8 +83,20 @@ void loop() {
             scanKeyState(keyPad.key[i]);
         }
     }
-    // Update the brightness of the LEDs based off the potentiometer
-    analogWrite(BRIGHTNESS_OUTPUT,analogRead(BRIGHTNESS_CONTROL)/4);
+    // Add the current reading of the brightness control to the average
+    brightAvg += analogRead(BRIGHTNESS_CONTROL);
+    // Increment the number of times the brightness control has been polled
+    brightCount ++;
+    // If the brightness control has been polled enough times
+    if (brightCount >= BRIGHTNESS_AVERAGING){
+        // Update the brightness of the LEDs based off the average of the 
+        // brightness control
+        analogWrite(BRIGHTNESS_OUTPUT,brightAvg/(4*brightCount));
+        // Reset the polling count
+        brightCount = 0;
+        // Reset the average
+        brightAvg = 0;
+    }
 }
 /**
  * This is invoked when a key is pressed and is used to perform the action for the 
