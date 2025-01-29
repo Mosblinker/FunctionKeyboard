@@ -86,11 +86,11 @@ void loop() {
             scanKeyState(keyPad.key[i]);
         }
     }
-    // Add the current reading of the brightness control to the filter
-    brightFilter.AddValue(analogRead(BRIGHTNESS_CONTROL));
-    // Calculate the brightness for the LEDs based off the average of the 
-    // brightness control over the last few polls
-    int tempBright = floor(brightFilter.GetFiltered()/4);
+    // Add the current reading of the brightness control to the filter, 
+    // mapping it to the range of the analog write
+    brightFilter.AddValue(map(analogRead(BRIGHTNESS_CONTROL),0, 1023, 0, 255));
+    // Calculate the brightness for the LEDs based off the filtered value
+    int tempBright = brightFilter.GetFiltered();
     // If the new brightness is different from the old brightness
     if (tempBright != bright){
         bright = tempBright;
