@@ -8,6 +8,7 @@
 #include <Keyboard.h>
 #include <math.h>
 #include <MedianFilterLib.h>
+#include <Filters.h>
 
 // The pin used to set the brightness of the LEDs via a potentiometer.
 const int BRIGHTNESS_CONTROL = A0;
@@ -16,6 +17,9 @@ const int BRIGHTNESS_OUTPUT = 10;
 // The number of times to poll the brightness control and average it 
 // to account for noise
 const int BRIGHTNESS_POLLING = 32;
+// The frequency for the low pass filter used to filter out noise from 
+// the brightness control
+const float BRIGHTNESS_LOW_PASS_FREQUENCY = 2;
 // The number of rows in the keyboard matrix
 const byte ROW_COUNT = 3;
 // The number of columns in the keyboard matrix
@@ -33,9 +37,12 @@ const char KEYBOARD_MAP[ROW_COUNT][COLUMN_COUNT] = {
 
 // The keypad that is being scanned
 Keypad keyPad = Keypad(makeKeymap(KEYBOARD_MAP), ROW_PINS, COLUMN_PINS, ROW_COUNT, COLUMN_COUNT);
-// A median filter to filter the readings of the brightness potentiometer, in order to filter out 
+// A median filter to filter the readings of the brightness control, in order to filter out 
 // noise
 MedianFilter<int> brightFilter(BRIGHTNESS_POLLING);
+// A low pass filter to filter the median of the readings of the brightness control, in 
+// order to filter out noise
+FilterOnePole brightLowPass(LOWPASS, BRIGHTNESS_LOW_PASS_FREQUENCY);
 // The current brightness of the LEDs
 int bright = 0;
 
@@ -88,9 +95,11 @@ void loop() {
     }
     // Add the current reading of the brightness control to the filter
     brightFilter.AddValue(analogRead(BRIGHTNESS_CONTROL));
+    // Use a low pass filter to filter out noise from the signal
+    brightLowPass.input(brightFilter.GetFiltered());
     // Calculate the brightness for the LEDs based off the filtered value, 
     // mapping it to the range of the analog write
-    int tempBright = map(brightFilter.GetFiltered(),0, 1023, 0, 255);
+    int tempBright = map(floor(brightLowPass.output()),0, 1023, 0, 255);
     // If the new brightness is different from the old brightness
     if (tempBright != bright){
         bright = tempBright;
