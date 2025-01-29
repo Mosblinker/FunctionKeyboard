@@ -106,6 +106,7 @@ void loop() {
         // Reset the average
         brightAvg = 0;
     }
+    delay(1);   // A delay for read stability
 }
 /**
  * This is invoked when a key is pressed and is used to perform the action for the 
