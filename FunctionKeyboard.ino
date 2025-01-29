@@ -14,7 +14,7 @@ const int BRIGHTNESS_CONTROL = A0;
 const int BRIGHTNESS_OUTPUT = 10;
 // The number of times to poll the brightness control and average it 
 // to account for noise
-const int BRIGHTNESS_POLLING = 64;
+const int BRIGHTNESS_POLLING = 32;
 // The number of rows in the keyboard matrix
 const byte ROW_COUNT = 3;
 // The number of columns in the keyboard matrix
