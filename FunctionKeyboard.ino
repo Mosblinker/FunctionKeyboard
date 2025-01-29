@@ -29,21 +29,21 @@ const char KEYBOARD_MAP[ROW_COUNT][COLUMN_COUNT] = {
     {KEY_F17, KEY_F18, KEY_F19, KEY_F20},
     {KEY_F21, KEY_F22, KEY_F23, KEY_F24}
 };
+
 // The keypad that is being scanned
 Keypad keyPad = Keypad(makeKeymap(KEYBOARD_MAP), ROW_PINS, COLUMN_PINS, ROW_COUNT, COLUMN_COUNT);
-
-// Function definitions
-void keyPressedActionPerformed(Key key);
-void keyReleasedActionPerformed(Key key);
-void keyHeldActionPerformed(Key key);
-void scanKeyState(Key key);
-
 // The unaveraged brightness used to get the brightness for the LEDs
 int brightAvg = 0;
 // The amount of times the brightness control has been polled so far
 int brightCount = 0;
 // The current brightness of the LEDs
 int bright = 0;
+
+// Function definitions
+void keyPressedActionPerformed(Key key);
+void keyReleasedActionPerformed(Key key);
+void keyHeldActionPerformed(Key key);
+void scanKeyState(Key key);
 
 /** 
  * This sets up the microcontroller for the program.
