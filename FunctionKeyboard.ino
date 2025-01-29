@@ -7,6 +7,7 @@
 #include <Keypad.h>
 #include <Keyboard.h>
 #include <math.h>
+#include <MedianFilterLib.h>
 
 // The pin used to set the brightness of the LEDs via a potentiometer.
 const int BRIGHTNESS_CONTROL = A0;
@@ -32,10 +33,9 @@ const char KEYBOARD_MAP[ROW_COUNT][COLUMN_COUNT] = {
 
 // The keypad that is being scanned
 Keypad keyPad = Keypad(makeKeymap(KEYBOARD_MAP), ROW_PINS, COLUMN_PINS, ROW_COUNT, COLUMN_COUNT);
-// The unaveraged brightness used to get the brightness for the LEDs
-int brightAvg = 0;
-// The amount of times the brightness control has been polled so far
-int brightCount = 0;
+// A median filter to filter the readings of the brightness potentiometer, in order to filter out 
+// noise
+MedianFilter<int> brightFilter(BRIGHTNESS_POLLING);
 // The current brightness of the LEDs
 int bright = 0;
 
@@ -86,25 +86,16 @@ void loop() {
             scanKeyState(keyPad.key[i]);
         }
     }
-    // Add the current reading of the brightness control to the average
-    brightAvg += analogRead(BRIGHTNESS_CONTROL);
-    // Increment the number of times the brightness control has been polled
-    brightCount++;
-    // If the brightness control has been polled enough times
-    if (brightCount >= BRIGHTNESS_POLLING){
-        // Calculate the brightness for the LEDs based off the average of the 
-        // brightness control over the last few polls
-        int tempBright = floor(brightAvg/(4*brightCount));
-        // If the new brightness is different from the old brightness
-        if (tempBright != bright){
-            bright = tempBright;
-            // Update the brightness of the LEDs
-            analogWrite(BRIGHTNESS_OUTPUT,bright);
-        }
-        // Reset the polling count
-        brightCount = 0;
-        // Reset the average
-        brightAvg = 0;
+    // Add the current reading of the brightness control to the filter
+    brightFilter.AddValue(analogRead(BRIGHTNESS_CONTROL));
+    // Calculate the brightness for the LEDs based off the average of the 
+    // brightness control over the last few polls
+    int tempBright = floor(brightFilter.GetFiltered()/4);
+    // If the new brightness is different from the old brightness
+    if (tempBright != bright){
+        bright = tempBright;
+        // Update the brightness of the LEDs
+        analogWrite(BRIGHTNESS_OUTPUT,bright);
     }
     delay(1);   // A delay for read stability
 }
