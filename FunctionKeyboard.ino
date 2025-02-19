@@ -136,7 +136,7 @@ void keyHeldActionPerformed(Key key){
 }
 /**
  * This scans the given key to determine if its state has changed, and if so, 
- * processes it's new state.
+ * processes its new state.
  * @param key - The key to scan and process.
  */
 void scanKeyState(Key key){
