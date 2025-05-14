@@ -34,6 +34,8 @@ const char KEYBOARD_MAP[ROW_COUNT][COLUMN_COUNT] = {
     {KEY_F17, KEY_F18, KEY_F19, KEY_F20},
     {KEY_F21, KEY_F22, KEY_F23, KEY_F24}
 };
+// This is the duration for the debounce of the keyboard matrix
+const int KEYBOARD_DEBOUNCE_TIME = 10;
 
 // The keypad that is being scanned
 Keypad keyPad = Keypad(makeKeymap(KEYBOARD_MAP), ROW_PINS, COLUMN_PINS, ROW_COUNT, COLUMN_COUNT);
@@ -76,6 +78,8 @@ void setup() {
     pinMode(BRIGHTNESS_OUTPUT, OUTPUT);
     // Start the LED brightness at 0 for the time being
     analogWrite(BRIGHTNESS_OUTPUT,0);
+    // Set the keyboard matrix's debounce time
+    keyPad.setDebounceTime(KEYBOARD_DEBOUNCE_TIME);
     
     // Start emulating a keyboard connected to a computer
     // TODO: Is this actually necessary?
