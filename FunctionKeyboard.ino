@@ -19,7 +19,7 @@ const int BRIGHTNESS_OUTPUT = 10;
 const int BRIGHTNESS_POLLING = 32;
 // The frequency for the low pass filter used to filter out noise from 
 // the brightness control
-const float BRIGHTNESS_LOW_PASS_FREQUENCY = 2;
+const float BRIGHTNESS_LOW_PASS_FREQUENCY = 8;
 // The number of rows in the keyboard matrix
 const byte ROW_COUNT = 3;
 // The number of columns in the keyboard matrix
