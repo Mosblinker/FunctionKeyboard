@@ -37,7 +37,7 @@ const char KEYBOARD_MAP[ROW_COUNT][COLUMN_COUNT] = {
 // This is the duration for the debounce of the keyboard matrix
 const int KEYBOARD_DEBOUNCE_TIME = 10;
 
-// The keypad that is being scanned
+// The keypad that is being scanned to simplify the scanning of the keyboard matrix
 Keypad keyPad = Keypad(makeKeymap(KEYBOARD_MAP), ROW_PINS, COLUMN_PINS, ROW_COUNT, COLUMN_COUNT);
 // A median filter to filter the readings of the brightness control, in order to filter out 
 // noise
