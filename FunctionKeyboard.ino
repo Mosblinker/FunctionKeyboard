@@ -35,7 +35,7 @@ const char KEYBOARD_MAP[ROW_COUNT][COLUMN_COUNT] = {
     {KEY_F21, KEY_F22, KEY_F23, KEY_F24}
 };
 // This is the duration for the debounce of the keyboard matrix, in milliseconds.
-const int KEYBOARD_DEBOUNCE_TIME = 25;
+const int KEYBOARD_DEBOUNCE_TIME = 30;
 
 // The keypad that is being scanned to simplify the scanning of the keyboard matrix
 Keypad keyPad = Keypad(makeKeymap(KEYBOARD_MAP), ROW_PINS, COLUMN_PINS, ROW_COUNT, COLUMN_COUNT);
